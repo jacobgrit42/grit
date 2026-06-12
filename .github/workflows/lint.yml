@@ -27,9 +27,11 @@ jobs:
         run: pnpm exec nx run-many -t eslint --all
 
       - name: Prettier
+        if: always()
         run: pnpm exec nx run-many -t format:check --all
 
       - name: TypeScript
+        if: always()
         run: pnpm exec nx run-many -t typecheck --all
 
   ruby-lint:
