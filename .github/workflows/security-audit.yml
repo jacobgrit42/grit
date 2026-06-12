@@ -21,7 +21,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run tests
-        run: pnpm exec nx run-many -t test --all
+        # @grit42/core and module frontends depend on live Rails backends (serve:test).
+        # Only run packages whose tests are backend-independent.
+        run: pnpm exec nx run-many -t test --projects=@grit42/spreadsheet
 
   ruby-tests:
     name: Ruby Tests (RSpec)
@@ -137,13 +139,13 @@ jobs:
         run: bundle exec brakeman -q --no-exit-on-warn --force
 
       - name: Run Brakeman (core)
-        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/core/backend
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../../modules/core/backend
 
       - name: Run Brakeman (assays)
-        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/assays/backend
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../../modules/assays/backend
 
       - name: Run Brakeman (compounds)
-        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/compounds/backend
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../../modules/compounds/backend
 
   bundler-audit:
     name: Bundler Audit (Gem CVEs)
