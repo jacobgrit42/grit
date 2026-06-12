@@ -130,10 +130,20 @@ jobs:
           working-directory: apps/grit/server
           bundler-opts: --with local
 
-      - name: Run Brakeman
+      - name: Run Brakeman (server)
         # --no-exit-on-warn: exit 0 on warnings, non-zero only on errors.
         # Switch to --exit-on-warn once the initial warning baseline is resolved.
-        run: bundle exec brakeman -q --no-exit-on-warn
+        # --force: server has no app/ dir (code lives in modules), scan routes/config anyway.
+        run: bundle exec brakeman -q --no-exit-on-warn --force
+
+      - name: Run Brakeman (core)
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/core/backend
+
+      - name: Run Brakeman (assays)
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/assays/backend
+
+      - name: Run Brakeman (compounds)
+        run: bundle exec brakeman -q --no-exit-on-warn -p ../../modules/compounds/backend
 
   bundler-audit:
     name: Bundler Audit (Gem CVEs)
