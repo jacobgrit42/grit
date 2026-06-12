@@ -66,6 +66,54 @@ jobs:
       - name: Run RSpec
         run: bundle exec rspec
 
+      - name: Install dependencies (core)
+        working-directory: modules/core/backend
+        run: bundle install
+
+      - name: Set up database (core)
+        working-directory: modules/core/backend
+        env:
+          GRIT_DATABASE: core
+        run: bundle exec rake db:create db:migrate
+
+      - name: Run RSpec (core)
+        working-directory: modules/core/backend
+        env:
+          GRIT_DATABASE: core
+        run: bundle exec rspec
+
+      - name: Install dependencies (assays)
+        working-directory: modules/assays/backend
+        run: bundle install
+
+      - name: Set up database (assays)
+        working-directory: modules/assays/backend
+        env:
+          GRIT_DATABASE: assays
+        run: bundle exec rake db:create db:migrate
+
+      - name: Run RSpec (assays)
+        working-directory: modules/assays/backend
+        env:
+          GRIT_DATABASE: assays
+        run: bundle exec rspec
+
+      - name: Install dependencies (compounds)
+        working-directory: modules/compounds/backend
+        run: bundle install
+
+      - name: Set up database (compounds)
+        working-directory: modules/compounds/backend
+        env:
+          GRIT_DATABASE: compounds
+        run: bundle exec rake db:create db:migrate
+
+      - name: Run RSpec (compounds)
+        working-directory: modules/compounds/backend
+        env:
+          GRIT_DATABASE: compounds
+        run: bundle exec rspec
+
   brakeman:
     name: Brakeman (Ruby SAST)
     runs-on: ubuntu-latest
